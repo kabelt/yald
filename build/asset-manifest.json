@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/yald/static/css/main.88467ab0.chunk.css",
+    "main.js": "/yald/static/js/main.212f8c56.chunk.js",
+    "main.js.map": "/yald/static/js/main.212f8c56.chunk.js.map",
+    "runtime-main.js": "/yald/static/js/runtime-main.3ea91f89.js",
+    "runtime-main.js.map": "/yald/static/js/runtime-main.3ea91f89.js.map",
+    "static/js/2.2e1cfc83.chunk.js": "/yald/static/js/2.2e1cfc83.chunk.js",
+    "static/js/2.2e1cfc83.chunk.js.map": "/yald/static/js/2.2e1cfc83.chunk.js.map",
+    "index.html": "/yald/index.html",
+    "static/css/main.88467ab0.chunk.css.map": "/yald/static/css/main.88467ab0.chunk.css.map",
+    "static/js/2.2e1cfc83.chunk.js.LICENSE.txt": "/yald/static/js/2.2e1cfc83.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/yald/static/media/img-8.fabdf94d.jpg",
+    "static/media/next.7c9d7c79.svg": "/yald/static/media/next.7c9d7c79.svg",
+    "static/media/pause.6d72bb70.svg": "/yald/static/media/pause.6d72bb70.svg",
+    "static/media/play.ae28f2f8.svg": "/yald/static/media/play.ae28f2f8.svg",
+    "static/media/prev.0b3cf3c2.svg": "/yald/static/media/prev.0b3cf3c2.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3ea91f89.js",
+    "static/js/2.2e1cfc83.chunk.js",
+    "static/css/main.88467ab0.chunk.css",
+    "static/js/main.212f8c56.chunk.js"
+  ]
+}
