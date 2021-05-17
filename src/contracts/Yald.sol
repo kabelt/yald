@@ -13,23 +13,11 @@ contract Yald {
     mapping(uint => address payable) public users;
     uint public userCount = 0;
 
-    // mapping (address =>  mapping (address => uint));
-    // struct Ownership{
-    //     mapping(uint=>uint) token_amount; //given token_id, how much a particular user own such token
-    // }
-
     struct Contributor{
         string Name;
         uint royalty_perc; //sum up to 100 amoung all
         address payable wallet_address;
     }
-
-    // struct Permission{
-    //     uint single_id;
-    //     bool is_active;
-    //     address payable grantee;
-    //     uint deadline;
-    // }
 
     struct Single {
         uint id;
@@ -51,9 +39,6 @@ contract Yald {
         name = "Yald";
     }
 
-    // function get_cur_price (uint _cir_supply) public view returns(uint){
-    //     return (((_cir_supply*(10**6))**2)/40);
-    // }
     function get_token_amount(address _address, uint _single_id) public returns (uint) {
         return ownership[_address][_single_id];
     }
@@ -74,11 +59,6 @@ contract Yald {
 
         // Increment image id
         musicCount ++;
-
-        // Add Image to the contract
-        // songs[SongCount] = Song(SongCount, _songHash, _description, 0, msg.sender);
-        // music[musicCount] = Single(musicCount, _title, _author_name, _track,  _artwork, _description, 1, 10, msg.sender, _contributor_1, _contributor_2, _contributor_3);
-        // music[musicCount] = Single(musicCount, _title, _author_name, _track,  _artwork, _description, 1, get_cur_price(1), msg.sender, _contributor_1, _contributor_2, _contributor_3);
         music[musicCount] = Single(musicCount, _title, _author_name, _track,  _artwork, _description, 0, msg.sender, _contributor_1, _contributor_2, _contributor_3);
     }
 
@@ -87,12 +67,9 @@ contract Yald {
         require(_id > 0 && _id <= musicCount);
         require(ownership[msg.sender][_id] >= amount);
         ownership[msg.sender][_id] = ownership[msg.sender][_id] - amount;
-        // require(ownership[msg.sender].token_amount[_id] >= amount);
-        // ownership[msg.sender].token_amount[_id] = ownership[msg.sender].token_amount[_id] - amount;
         //fetch the single
         Single memory _single = music[_id];
-        //calculate all the price
-        // uint cost = ((_single.cir_supply**3) / 40 / 3) - (((_single.cir_supply - amount)**3) / 40 / 3);
+        //decrease circulating supply
         _single.cir_supply = _single.cir_supply - amount;
 
         //give the rest 10% to the artist
@@ -121,19 +98,12 @@ contract Yald {
         contract_bal = address(this).balance;
     }
 
-    // function getPermission(uint _id) public payable {
-    // function buyPermission(uint _id) public payable {
-    // function buyToken(uint _id) public payable {
-    function buyToken(uint _id, uint amount) public payable { //the cost must be correct from the web3
-
-
-
+    function buyToken(uint _id, uint amount) public payable { //the cost has already been calculated correctly from the web3
         // Make sure the id is valid
         require(_id > 0 && _id <= musicCount);
         // Fetch the single
         Single memory _single = music[_id];
         //give 10% to contributors
-        // uint for_artist = msg.value * 15 / 100;
         uint for_artist = msg.value * 10 / 100;
         if (_single.contributor_1.wallet_address != address(0)){
             (_single.contributor_1.wallet_address).transfer(for_artist * _single.contributor_1.royalty_perc / 100);
@@ -164,124 +134,9 @@ contract Yald {
         }
         //add cir_supply
         _single.cir_supply = _single.cir_supply + amount;
-        //update the current price
-        // _single.cur_price = get_cur_price(_single.cir_supply);
         // Update the single
         music[_id] = _single;
         //Update ownership
         ownership[msg.sender][_id] = ownership[msg.sender][_id] + amount;
-        // ownership[msg.sender].token_amount[_id] = ownership[msg.sender].token_amount[_id] + amount;
         contract_bal = address(this).balance;
   }
-
-
-//       function tipSingleOwner(uint _id) public payable {
-//         // Make sure the id is valid
-//         // require(_id > 0 && _id <= musicCount);
-//         // Fetch the image
-//         Single memory _single = music[_id];
-//         // Fetch the author
-//         address payable _author = _single.author;
-//         // Pay the author by sending them Ether
-//         address(_author).transfer(msg.value);
-//         // Increment the tip amount
-//         _single.tipAmount = _single.tipAmount + msg.value;
-//         // Update the single
-//         music[_id] = _single;
-//         // Trigger an event
-//         emit SingleTipped(_id, _single.title, _single.author_name,  _single.track, _single.artwork ,_single.description, _single.tipAmount, _author);
-//   }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// pragma solidity ^0.5.0;
-
-// contract Yald {
-//     string public name;
-//     uint public musicCount = 0;
-//     mapping(uint => Single) public music;
-
-//     struct Single {
-//         uint id;
-//         string title;
-//         string author_name;
-//         string track;
-//         string artwork;
-//         string description;
-//         uint tipAmount;
-//         address payable author;
-//     }
-
-//     event SingleCreated(
-//         uint id,
-//         string title,
-//         string author_name,
-//         string track,
-//         string artwork,
-//         string description,
-//         uint tipAmount,
-//         address payable author
-//     );
-
-//     event SingleTipped(
-//         uint id,
-//         string title,
-//         string author_name,
-//         string track,
-//         string artwork,
-//         string description,
-//         uint tipAmount,
-//         address payable author
-//     );
-
-//     constructor() public {
-//         name = "Yald";
-//     }
-
-//     function uploadSingle(string memory _title, string memory _author_name, string memory _track, string memory _artwork, string memory _description) public {
-//         // Make sure all the info exist
-//         require(bytes(_title).length > 0);
-//         require(bytes(_author_name).length > 0);
-//         require(bytes(_track).length > 0);
-//         require(bytes(_artwork).length > 0);
-//         require(bytes(_description).length > 0);
-//         require(msg.sender!=address(0));
-//         // Increment image id
-//         musicCount ++;
-
-//         // Add Image to the contract
-//         // songs[SongCount] = Song(SongCount, _songHash, _description, 0, msg.sender);
-//         music[musicCount] = Single(musicCount, _title, _author_name, _track,  _artwork, _description, 0, msg.sender);
-//         // Trigger an event
-//         emit SingleCreated(musicCount, _title, _author_name, _track, _artwork, _description, 0, msg.sender);
-//     }
-
-//     function tipSingleOwner(uint _id) public payable {
-//         // Make sure the id is valid
-//         // require(_id > 0 && _id <= musicCount);
-//         // Fetch the image
-//         Single memory _single = music[_id];
-//         // Fetch the author
-//         address payable _author = _single.author;
-//         // Pay the author by sending them Ether
-//         address(_author).transfer(msg.value);
-//         // Increment the tip amount
-//         _single.tipAmount = _single.tipAmount + msg.value;
-//         // Update the single
-//         music[_id] = _single;
-//         // Trigger an event
-//         emit SingleTipped(_id, _single.title, _single.author_name,  _single.track, _single.artwork ,_single.description, _single.tipAmount, _author);
-//   }
-// }
