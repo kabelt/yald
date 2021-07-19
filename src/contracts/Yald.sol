@@ -140,3 +140,4 @@ contract Yald {
         ownership[msg.sender][_id] = ownership[msg.sender][_id] + amount;
         contract_bal = address(this).balance;
   }
+}
